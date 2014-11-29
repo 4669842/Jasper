@@ -14,7 +14,7 @@ import java.lang.reflect.*;
  = Desc:          Constant Table Pool                                   =
  =======================================================================*/
 class Pool_Collection {
-   private short count;                // number of entries in the constant pool table (no zero entry)
+   private int count;                  // number of entries in the constant pool table (no zero entry)
    private int[] poolType;             // type of pool constant
    private Pool[] pool;                // constant pool table
 
@@ -25,7 +25,7 @@ class Pool_Collection {
     -----------------------------------------------------------------------*/
    Pool_Collection(DataInputStream ios) throws IOException {
       // read in the number of entries in the table
-      count = ios.readShort();
+      count = ios.readUnsignedShort();
 
       // allocate the arrays to hold the pool constants
       poolType = new int[count];
@@ -176,7 +176,7 @@ abstract class Pool {
    static String escapeString(String raw) {
       String retVal = raw;
       for (int i = 0; i < retVal.length(); i++) {
-         if ((retVal.charAt(i) < ' ') || (retVal.charAt(i) > '~') || (retVal.charAt(i) == '\"')) {
+         if ((retVal.charAt(i) < ' ') || (retVal.charAt(i) > '~') || (retVal.charAt(i) == '\"') || retVal.charAt(i) == '\\') {
             String s = Integer.toOctalString(retVal.charAt(i));
             while (s.length() < 3) s = '0' + s;
             s = '\\' + s;
@@ -188,6 +188,12 @@ abstract class Pool {
          }
       }
       return retVal;
+   }
+
+   static String renameReserved(String raw) {
+      if (raw.startsWith("_")) return "_" + raw;
+      if (raw.equals("is")) return "_" + raw;
+      return raw;
    }
 
    /*-----------------------------------------------------------------------
@@ -327,6 +333,7 @@ class Pool_Utf8 extends Pool {
          }
       }
       value = escapeString(value);
+      value = renameReserved(value);
    }
 
    /*-----------------------------------------------------------------------
@@ -359,6 +366,7 @@ class Pool_Unicode extends Pool {
          value = value + ios.readChar();
       }
       value = escapeString(value);
+      value = renameReserved(value);
    }
 
    /*-----------------------------------------------------------------------

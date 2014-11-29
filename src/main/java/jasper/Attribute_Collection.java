@@ -54,13 +54,13 @@ class Attribute_Collection {
     -----------------------------------------------------------------------*/
    Attribute_Collection(DataInputStream ios, Pool_Collection pool) throws IOException {
       // get the number of methods
-      count  = ios.readShort();
+      count  = ios.readUnsignedShort();
 
       // read in the attributes - use reflection to dispatch to the appropriate class
       attributes = new Attribute[count];
       for (int i = 0; i < count; i++) {
          // get the attribute name (index into constant pool table)
-         int attributeIndex = ios.readShort();
+         int attributeIndex = ios.readUnsignedShort();
          try {
             Constructor myConstructor;
 
@@ -319,7 +319,7 @@ abstract class Attribute {
       this.attributeIndex = attributeIndex;
 
       // read the length of the attribute
-      int length = ios.readInt();
+      this.length = ios.readInt();
    }
 
    /*-----------------------------------------------------------------------

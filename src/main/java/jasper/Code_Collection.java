@@ -1011,6 +1011,7 @@ class Code_lookupswitch extends Code {
     -----------------------------------------------------------------------*/
    void getLabel(Code_Collection code) {
       for (int i = 0; i < count; i++) code.setLabel(pc+branch[i]);
+      code.setLabel(pc+lookupDefault);
    }
 
    /*-----------------------------------------------------------------------
@@ -1254,7 +1255,7 @@ class Code_wide extends Code {
       lvtIndex = ios.readShort();
 
       // get the description of the wide extended opcode
-      wideDesc = (String)Code_Collection.dispatch[lvtIndex][2];
+      wideDesc = (String)Code_Collection.dispatch[widecode][2];
 
       // if the iinc is being extended, then 2 additional bytes need to be read in
       if (wideDesc.equals("iinc")) {
