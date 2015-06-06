@@ -499,7 +499,7 @@ class Attribute_ConstantValue extends Attribute {
     - Desc:          set constant value string to complete field declare   -
     -----------------------------------------------------------------------*/
    String jasminConstantValue() {
-      return " = " + pool.toString(constantIndex);
+      return " = " + pool.constantFieldInitializer(constantIndex);
    }
 
    /*-----------------------------------------------------------------------

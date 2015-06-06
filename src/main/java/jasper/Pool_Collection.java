@@ -126,6 +126,10 @@ class Pool_Collection {
       return pool[cptIndex].browseDescriptor();
    }
 
+   String constantFieldInitializer(int optIndex) {
+      return pool[optIndex].constantFieldInitializer();
+   }
+
    /*-----------------------------------------------------------------------
     - Field:         dispatch                                              -
     -                                                                      -
@@ -270,6 +274,10 @@ abstract class Pool {
     - Desc:          default browse string to same as toString method      -
     -----------------------------------------------------------------------*/
    String browseString() {
+      return toString();
+   }
+
+   String constantFieldInitializer() {
       return toString();
    }
 
@@ -461,6 +469,10 @@ class Pool_Long extends Pool {
    public String toString() {
       return Long.toString(value);
    }
+
+   String constantFieldInitializer() {
+      return toString() + "L";
+   }
 }
 
 /*=======================================================================
@@ -488,6 +500,10 @@ class Pool_Double extends Pool {
     -----------------------------------------------------------------------*/
    public String toString() {
       return Double.toString(value);
+   }
+
+   String constantFieldInitializer() {
+      return toString() + "d";
    }
 }
 
