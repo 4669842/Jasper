@@ -66,6 +66,14 @@ class Attribute_Collection {
 
             // get subclass that handles the attribute
             Class newClass = getDispatch(pool.toString(attributeIndex));
+            if (newClass == null)
+            {
+                newClass = Attribute_Unknown.class;
+
+                // echo that jasper doesn't currently handle the attribute
+                System.out.println("Undefined Attribute (name=" + pool.toString(attributeIndex) + ")");
+            }
+
             try {
                // for some reason this technique is not working in JDK1.2?
                myConstructor = newClass.getConstructor(new Class[]
@@ -102,8 +110,7 @@ class Attribute_Collection {
          if (s.equals((String)dispatch[i][0])) return (Class)dispatch[i][1];
       }
 
-      // if dispatch class not found then use Attribute_Unknown class
-      return (Class)dispatch[0][1];
+      return null;
    }
 
    /*-----------------------------------------------------------------------
@@ -954,10 +961,8 @@ class Attribute_Unknown extends Attribute {
       // set the common variables
       super(ios, pool, attributeIndex);
 
-      // echo that jasper doesn't currently handle the attribute
-      System.out.println("Undefined Attribute (length=" + length + ") (name=" + this.toString() + ")");
-
       // do a hex dump of the attributes (mostly for debugging)
-      ClassFile.dump(ios, length);
+      //ClassFile.dump(ios, length);
+      ios.skip(length);
    }
 }
