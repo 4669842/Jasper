@@ -151,7 +151,13 @@ class Pool_Collection {
       {"9",  "1", Pool_Fieldref.class},
       {"10", "1", Pool_Methodref.class},
       {"11", "1", Pool_InterfaceMethodref.class},
-      {"12", "1", Pool_NamedType.class}
+      {"12", "1", Pool_NamedType.class},
+      {null, null, null},
+      {null, null, null},
+      {"15", "1", Pool_MethodHandle.class},
+      {"16", "1", Pool_MethodType.class},
+      {null, null, null},
+      {"18", "1", Pool_InvokeDynamic.class}
    };
 }
 
@@ -802,4 +808,27 @@ class Pool_NamedType extends Pool {
          return s + " " + pool.browseString(nameIndex);
       }
    }
+}
+
+class Pool_MethodHandle extends Pool {
+	Pool_MethodHandle(DataInputStream ios, Pool_Collection pool) throws IOException {
+		super(pool);
+		ios.readByte(); // reference kind
+		ios.readShort(); // reference index
+	}
+}
+
+class Pool_MethodType extends Pool {
+	Pool_MethodType(DataInputStream ios, Pool_Collection pool) throws IOException {
+		super(pool);
+		ios.readShort(); // nat index
+	}
+}
+
+class Pool_InvokeDynamic extends Pool {
+	Pool_InvokeDynamic(DataInputStream ios, Pool_Collection pool) throws IOException {
+		super(pool);
+		ios.readShort(); // bootstrap method
+		ios.readShort(); // nat index
+	}
 }
